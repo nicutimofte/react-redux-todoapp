@@ -9,19 +9,20 @@ It helps you write applications that behave consistently, run in different envir
 
 You can use Redux together with React, or with any other view library.
 
+ * [Redux Documentation](http://redux.js.org/index.html)
+
+## Learning React
+
 > React is a JavaScript library for creating user interfaces. Its core principles are declarative code, efficiency, and flexibility. Simply specify what your component looks like and React will keep it up-to-date when the underlying data changes.
 
 > _[React - facebook.github.io/react](http://facebook.github.io/react)_
 
- *[Redux Documentation](http://redux.js.org/index.html)
-
-## Learning React
 
 The [React getting started documentation](http://facebook.github.io/react/docs/getting-started.html) is a great way to get started.
 
 Here are some links you may find helpful:
 
-* [Documentation](http://facebook.github.io/react/docs/getting-started.html)
+[Documentation](http://facebook.github.io/react/docs/getting-started.html)
 * [API Reference](http://facebook.github.io/react/docs/reference.html)
 * [Blog](http://facebook.github.io/react/blog/)
 * [React on GitHub](https://github.com/facebook/react)
