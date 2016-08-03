@@ -19,7 +19,6 @@ class TodoFilter extends React.Component{
 
     render(){
         let nowShowing=this.props.nowShowing;
-        console.log(nowShowing);
         var clearButton=null;
         if(this.props.completedCount > 0){
             clearButton=(

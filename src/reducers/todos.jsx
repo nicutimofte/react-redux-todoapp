@@ -1,4 +1,11 @@
-import { ADD_TODO, DELETE_TODO, EDIT_TODO, COMPLETE_TODO, COMPLETE_ALL, CLEAR_COMPLETED } from '../constants/ActionTypes.jsx';
+import {
+    ADD_TODO,
+    DELETE_TODO,
+    EDIT_TODO,
+    COMPLETE_TODO,
+    COMPLETE_ALL,
+    CLEAR_COMPLETED
+} from '../constants/ActionTypes.jsx';
 
 const initialState = [
     {
@@ -26,17 +33,19 @@ export default function todos(state = initialState, action) {
             );
 
         case EDIT_TODO:
-            return state.map(todo =>
-                todo.id === action.id ?
-                    Object.assign({}, todo, { text: action.text }) :
-                    todo
+            return state.map(todo => {
+                    return todo.id === action.id ?
+                        Object.assign({}, todo, {text: action.text}) :
+                        todo
+                }
             );
 
         case COMPLETE_TODO:
-            return state.map(todo =>
-                todo.id === action.id ?
-                    Object.assign({}, todo, { completed: !todo.completed }) :
-                    todo
+            return state.map(todo => {
+                    return todo.id === action.id ?
+                        Object.assign({}, todo, {completed: !todo.completed}) :
+                        todo;
+                }
             );
 
         case COMPLETE_ALL:

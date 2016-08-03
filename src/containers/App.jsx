@@ -7,10 +7,10 @@ import * as TodoActions from '../actions/index.jsx'
 
 class App extends Component {
     render() {
-        const { todos, actions } = this.props;
+        const { store,todos, actions } = this.props;
         return (
             <div>
-                <MainSection addTodo={actions.addTodo} todos={todos} actions={actions} />
+                <MainSection store={store} todos={todos} actions={actions} />
             </div>
         )
     }

@@ -17,7 +17,7 @@ import * as TodoActions from './actions/index.jsx'
 
 render(
     <Provider store={store}>
-        <App actions={TodoActions} todos={store.getState().todos}   />
+        <App store={store} actions={TodoActions} todos={store.getState().todos}   />
     </Provider>,
     document.getElementById('react-root')
 );

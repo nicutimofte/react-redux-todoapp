@@ -1,4 +1,7 @@
 import * as types from '../constants/ActionTypes.jsx'
+export const TYPE = {
+    ADD_TODO: 'ADD_TODO'
+};
 
 export function addTodo(text) {
     return { type: types.ADD_TODO, text }
@@ -9,6 +12,7 @@ export function deleteTodo(id) {
 }
 
 export function editTodo(id, text) {
+
     return { type: types.EDIT_TODO, id, text }
 }
 

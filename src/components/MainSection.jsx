@@ -5,7 +5,7 @@ import TodoFilter from './TodoFilter.jsx';
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters.jsx'
 
 var ENTER_KEY = 13;
-var key=0;
+
 
 const TODO_FILTERS = {
     [SHOW_ALL]: () => true,
@@ -20,15 +20,13 @@ class MainSection extends React.Component {
         super(props);
         this.state={
             filter: SHOW_ALL,
-            editing:null
+            editing: null
         };
     }
-
     edit(todo,text){
-        this.props.actions.editTodo(todo.id,text);
+        const { store } = this.props;
+        store.dispatch(this.props.actions.editTodo(todo.id,text));
     }
-
-
     handleClickAll(){
         this.setState({filter:SHOW_ALL})
     }
@@ -60,24 +58,7 @@ class MainSection extends React.Component {
             )
         }
     }
-    renderTodoItem(todo) {
-        return (
-            <TodoItem
-                todo={todo}
-                key={key++}
-                onToggle={this.toggle.bind(this,todo)}
-                handleDestroyButton={this.destroyButton.bind(this,todo)}
-                onEdit={this.edit.bind(this,todo)}
-                editing={this.state.editing===todo}
-                onSave={this.save.bind(this,todo)}
-                onCancel={this.cancel.bind(this)}
-            />
-        )
-    }
 
-    toggle(todoToToggle){
-        this.props.actions.completeTodo(todoToToggle.id);
-    }
 
     handleNewTodoKeyDown(event){
         if(event.keyCode !== ENTER_KEY)
@@ -88,7 +69,6 @@ class MainSection extends React.Component {
         if(val){
             this.props.actions.addTodo(val);
             event.target.value='';
-            // this.setState({newTodo:''});
         }
     }
 
@@ -97,7 +77,7 @@ class MainSection extends React.Component {
     }
 
     handleShow(filter) {
-        this.setState({ filter })
+        this.setState({filter: filter })
     }
 
     renderToggleAll(completedCount) {
@@ -112,16 +92,35 @@ class MainSection extends React.Component {
         }
     }
 
+    setItemsLeft(completedCount){
+        const { todos } = this.props;
+        const { filter } = this.state;
+        const activeCount=todos.length-completedCount;
+        let count;
+
+        if(filter===SHOW_ALL){
+            count=todos.length;
+        }
+        else
+        if(filter===SHOW_ACTIVE){
+            count=activeCount;
+        }
+        else{
+            count=completedCount;
+        }
+        return count;
+    }
     renderFooter(completedCount) {
         const { todos } = this.props;
         const { filter } = this.state;
-        const activeCount = todos.length - completedCount;
-
+        let count;
+        const currentCount=this.setItemsLeft(completedCount);
         if (todos.length) {
             return (
                 <TodoFilter
+                    key={filter}
                     completedCount={completedCount}
-                    activeCount={activeCount}
+                    count={currentCount}
                     filter={filter}
                     clearCompletedButton={this.handleClearCompleted.bind(this)}
                     nowShowing={this.state.filter}
@@ -133,27 +132,33 @@ class MainSection extends React.Component {
             )
         }
     }
-    edit(todo){
-        this.setState({editing:todo.id})
+    setEditing(todo){
+        this.setState({editing:todo.id});
     }
     deleteTodo(todo){
         this.props.actions.deleteTodo(todo.id)
     }
-    cancel(){
+    onCancelEditing(){
         this.setState({editing:null})
+    }
+    toggle(todoToToggle){
+        this.props.actions.completeTodo(todoToToggle.id);
     }
     render() {
         var footer;
         var main;
 
-        const { todos, actions } = this.props;
+        const { store, todos, actions } = this.props;
         const { filter } = this.state;
-        console.log(filter);
         const filteredTodos = todos.filter(TODO_FILTERS[filter]);
+        // this.props.store.dispatch(editTodo(0,blabla));
+        console.log(todos);
+
         const completedCount = todos.reduce((count, todo) =>
                 todo.completed ? count + 1 : count,
             0
         );
+        //console.log(todos);
 
         return (
             <div>
@@ -162,7 +167,6 @@ class MainSection extends React.Component {
                         className="new-todo"
                         type="text"
                         placeholder="What needs to be done?"
-                        //onChange={this.handleChange.bind(this)}
                         onKeyDown={this.handleNewTodoKeyDown.bind(this)}
 
                     />
@@ -178,8 +182,8 @@ class MainSection extends React.Component {
                                 onDelete={this.deleteTodo.bind(this,todo)}
                                 onToggle={this.toggle.bind(this,todo)}
                                 onSaveEdit={this.edit.bind(this,todo)}
-                                onEdit={this.edit.bind(this,todo)}
-                                onCancel={this.cancel.bind(this)}
+                                onEdit={this.setEditing.bind(this,todo)}
+                                onCancel={this.onCancelEditing.bind(this)}
                             />
                         )}
                     </ul>
